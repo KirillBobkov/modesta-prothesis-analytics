@@ -1,14 +1,22 @@
 import React from "react";
 import styles from "./Navigation.module.css";
 
-
 export const Navigation = React.memo(() => {
-
   return (
     <header className={styles.navigation}>
-      <nav itemScope itemType="http://schema.org/SiteNavigationElement" className={styles.navigation__container}>
-        <div  className={styles.navigation__logo}>
-          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 462 800" height={25} xmlnsXlink="http://www.w3.org/1999/xlink">
+      <nav
+        itemScope
+        itemType="http://schema.org/SiteNavigationElement"
+        className={styles.navigation__container}
+      >
+        <div className={styles.navigation__logo}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.1"
+            viewBox="0 0 462 800"
+            height={25}
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+          >
             <g>
               <path d="M -0.5,-0.5 C 27.1667,-0.5 54.8333,-0.5 82.5,-0.5C 82.369,0.238911 82.5357,0.905578 83,1.5C 137.233,55.7331 191.4,109.9 245.5,164C 226.694,183.973 207.36,203.473 187.5,222.5C 152.819,187.986 117.986,153.652 83,119.5C 82.5,189.499 82.3333,259.499 82.5,329.5C 54.8333,329.5 27.1667,329.5 -0.5,329.5C -0.5,219.5 -0.5,109.5 -0.5,-0.5 Z" />
             </g>
@@ -41,7 +49,10 @@ export const Navigation = React.memo(() => {
             viewBox="0 0 436.000000 436.000000"
             preserveAspectRatio="xMidYMid meet"
           >
-            <g transform="translate(0.000000,436.000000) scale(0.100000,-0.100000)" stroke="none">
+            <g
+              transform="translate(0.000000,436.000000) scale(0.100000,-0.100000)"
+              stroke="none"
+            >
               <path
                 d="M886 4344 c-219 -43 -408 -144 -567 -303 -161 -162 -262 -351 -304
                                 -574 -23 -121 -23 -2495 1 -2617 63 -332 282 -624 583 -774 167 -83 14 -77
