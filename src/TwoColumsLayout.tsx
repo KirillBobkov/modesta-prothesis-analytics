@@ -36,15 +36,12 @@ const TwoColumnLayout: React.FC = () => {
     <ThemeProvider theme={newTheme}>
       <div className={styles.layout}>
         <div className={`${styles.column} ${styles.columnLeft}`}>
-          <Profile />
-        </div>
-        <div className={`${styles.column} ${styles.columnRight}`}>
-          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+          <div className={styles.title} style={{ width: "100%" }}>
             Модеста мониторинг
           </div>
-
-          <div className={styles.container}>
-            <h1 className={styles.title}>Управление Bluetooth</h1>
+          <div style={{ marginTop: "30px" }}></div>
+          <div className={styles.container_buttons}>
+            <h1 className={styles.secondary_title}>Управление Bluetooth</h1>
             <div className={styles.buttons}>
               <Button variant="contained" style={{ backgroundColor: "#DCE359" }} onClick={handleConnect}>
                 Подключить
@@ -54,41 +51,56 @@ const TwoColumnLayout: React.FC = () => {
               </Button>
             </div>
           </div>
-
-          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+          <div style={{ marginTop: "30px" }}></div>
+          <h2 className={styles.menu_link}>📦 Комплектация</h2>
+          <h2 className={styles.menu_link}>🛠 Ремонт</h2>
+          <h2 className={styles.menu_link}>🚀 Прогресс</h2>
+          <h2 className={styles.menu_link}>🌟 Рейтинг</h2>
+          <h2 className={styles.menu_link}>✏️ Задания</h2>
+        </div>
+        <div className={`${styles.column} ${styles.columnCenter}`}>
+         <div className={styles.title} style={{ width: "100%" }}>
             Уровень активности
           </div>
-          <ChartComponent title="Ось X" data={trainingData} />
-          <ChartComponent title="Ось Y" data={trainingData} />
-          <ChartComponent title="Ось Z" data={trainingData} />
 
-          <div className={styles.container_chart}>
-            <h1 className={styles.title}>Уровень заряда</h1>
-            <ArcDesign />
+          <div className={styles.charts}>
+            <ChartComponent title="Ось X" data={trainingData} />
+            <ChartComponent title="Ось Y" data={trainingData} />
+            <ChartComponent title="Ось Z" data={trainingData} />
+
+            <div className={styles.container_chart}>
+              <h1 className={styles.secondary_title}>Уровень заряда</h1>
+              <ArcDesign />
+            </div>
           </div>
 
           <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
             Расход комплектующих
           </div>
-          <div className={styles.container_chart}>
-            <h1 className={styles.title}>Подшипник</h1>
-            <CompositionExample />
-          </div>
+          <div className={styles.charts_2}>
+            <div className={styles.container_chart_2}>
+              <h1 className={styles.secondary_title}>Подшипник</h1>
+              <CompositionExample />
+            </div>
 
-          <div className={styles.container_chart}>
-            <h1 className={styles.title}>Пружины</h1>
-            <CompositionExample />
-          </div>
+            <div className={styles.container_chart_2}>
+              <h1 className={styles.secondary_title}>Пружины</h1>
+              <CompositionExample />
+            </div>
 
-          <div className={styles.container_chart}>
-            <h1 className={styles.title}>Наконечник (пальцы)</h1>
-            <CompositionExample />
-          </div>
+            <div className={styles.container_chart_2}>
+              <h1 className={styles.secondary_title}>Наконечник</h1>
+              <CompositionExample />
+            </div>
 
-          <div className={styles.container_chart}>
-            <h1 className={styles.title}>Нити</h1>
-            <CompositionExample />
+            <div className={styles.container_chart_2}>
+              <h1 className={styles.secondary_title}>Нити</h1>
+              <CompositionExample />
+            </div>
           </div>
+        </div>
+        <div className={`${styles.column} ${styles.columnLeft}`}>
+          <Profile />
         </div>
       </div>
     </ThemeProvider>
@@ -100,7 +112,7 @@ interface ChartComponentProps {
 }
 const ChartComponent: React.FC<ChartComponentProps> = ({ title, data }) => (
   <div className={styles.container_chart}>
-    <h1 className={styles.title}>{title}</h1>
+    <h1 className={styles.secondary_title}>{title}</h1>
     <LineChart
       margin={{
         left: 40,
@@ -117,7 +129,6 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ title, data }) => (
           color: "#DCE359",
         },
       ]}
-      height={200}
     />
   </div>
 );
@@ -130,38 +141,50 @@ const Profile: React.FC = () => (
           className={styles["person__avatar"]}
           src="https://www.womanhit.ru/media/CACHE/images/articleimage2/2019/8/margo/a6c184fd913aa69ac5ee8fbf8bea049b.jpg"
         />
-      </div>
-      <p className={styles["person__info"]}>
-        <span itemProp="name" className={styles["person__name"]}>
+        <p itemProp="name" className={styles["person__name"]}>
           Марго Робби
-        </span>
-        <span className={styles["person__profession"]}>22.02.1994</span>
-        <span className={styles["person__profession"]}>
-          <a href="tel:+79991202332">+7 999 120 23 32</a>
-        </span>
-        <span className={styles["person__profession"]}>
-          <a href="mailto:test@mail.ru">test@mail.ru</a>
-        </span>
-        <span className={styles["person__profession"]}>
-          <a href="mailto:test@mail.ru">Статус: Новичок (Меньше 100 часов использования)</a>
-        </span>
-
-        <span className={styles["person__profession"]}>
-          <a>Статус: Новичок (Меньше 100 часов использования)</a>
-        </span>
-
-        <span className={styles["person__profession"]}>
-          <a>Идентификационный номер: XF-434</a>
-        </span>
-      </p>
+        </p>
+      </div>
     </div>
 
-    <div style={{ marginTop: "30px" }}></div>
-    <h2 className={styles.menu_link}>📦 Комплектация</h2>
-    <h2 className={styles.menu_link}>🛠 Ремонт</h2>
-    <h2 className={styles.menu_link}>🚀 Прогресс</h2>
-    <h2 className={styles.menu_link}>🌟 Рейтинг</h2>
-    <h2 className={styles.menu_link}>✏️ Задания</h2>
+    <table>
+      <tr>
+        <td>Дата рождения</td>
+        <td className={styles["person__profession"]}>22.02.1994</td>
+      </tr>
+      <tr>
+        <td>Телефон</td>
+        <td>
+          <p className={styles["person__profession"]}>
+            <a href="tel:+79991202332">+7 999 120 23 32</a>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>E-mail</td>
+        <td>
+          <p className={styles["person__profession"]}>
+            <a href="mailto:test@mail.ru">test@mail.ru</a>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Статус</td>
+        <td>
+          <p className={styles["person__profession"]}>
+            <a>Новичок (Меньше 100 часов использования)</a>
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Идентификатор</td>
+        <td>
+          <p className={styles["person__profession"]}>
+            <a>XF-434</a>
+          </p>
+        </td>
+      </tr>
+    </table>
   </div>
 );
 const settings = {
@@ -211,7 +234,7 @@ function GaugePointer() {
 
 function CompositionExample() {
   return (
-    <GaugeContainer width={200} height={200} startAngle={-110} endAngle={110} value={30}>
+    <GaugeContainer width={200} startAngle={-110} endAngle={110} value={30}>
       <GaugeReferenceArc />
       <GaugeValueArc />
       <GaugePointer />
