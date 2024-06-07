@@ -92,6 +92,19 @@
     background-color: var(--card-bg-color);
   }
 
+  .container_chart_part {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 30px;
+    width: 24%;
+    gap: 10px;
+    padding: 15px;
+    align-items: center;
+    background-color: var(--card-bg-color);
+  }
+
   .container_chart_title {
     font-size: 32px;
     line-height: 36px;
@@ -171,7 +184,7 @@
 
 
 .menu_link {
-  color: #505050;
+  color: #ffffff;
   margin-bottom: 20px;
   text-align: left;
   font-size: 16px;

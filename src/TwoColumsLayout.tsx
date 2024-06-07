@@ -7,19 +7,63 @@ import { connect } from "./connect";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { GaugeContainer, GaugeValueArc, GaugeReferenceArc, useGaugeState } from "@mui/x-charts/Gauge";
 
+import { fromEvent, interval } from "rxjs";
+import { mapTo, scan, startWith, tap } from "rxjs/operators";
+
+const INITIAL_COUNT = 0;
+
+// Функция для создания Observable счётчика
+export function createCounterObservable() {
+  // Создаём поток интервалов, который будет увеличивать значение счётчика каждую секунду
+  const counter$ = interval(1000).pipe(
+    // Используем scan для накопления значений
+    scan((acc, _) => acc + 1),
+    // Начинаем с начального значения
+    startWith(INITIAL_COUNT)
+  );
+
+  return counter$;
+}
+
+function formatSeconds(seconds: number) {
+  const hours = Math.floor(seconds / 3600); // Часы
+  seconds %= 3600; // Остаток от деления на 3600 (минуты)
+  
+  const minutes = Math.floor(seconds / 60); // Минуты
+  seconds %= 60; // Секунды
+  
+  return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${("0" + seconds).slice(-2)}`;
+}
+
 const TwoColumnLayout: React.FC = () => {
   const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
+  const [subscription2, setSubscription2] = useState<Subscription | undefined>(undefined);
   const [trainingData, setTrainingData] = useState<number[]>([]);
   const [currentValue, setCurrentValue] = useState<number | undefined>(undefined);
+  const [timeStart, setSeconds] = useState<number | undefined>(undefined);
+
   const handleConnect = useCallback(() => {
     const newSubscription = connect().subscribe((value: number) => {
       setCurrentValue(value * 10);
     });
     setSubscription(newSubscription);
+
+    // Пример использования
+    const counterObj = createCounterObservable();
+
+    const newSubscription2 = counterObj.subscribe({
+      next: (value) => setSeconds(value)
+    });
+
+    setSubscription2(newSubscription2);
+
   }, []);
+
   const handleDisconnect = useCallback(() => {
     subscription?.unsubscribe();
     setSubscription(undefined);
+    subscription2?.unsubscribe();
+    setSubscription2(undefined);
   }, [subscription]);
   useEffect(() => {
     if (currentValue !== undefined) {
@@ -59,7 +103,7 @@ const TwoColumnLayout: React.FC = () => {
           <h2 className={styles.menu_link}>✏️ Задания</h2>
         </div>
         <div className={`${styles.column} ${styles.columnCenter}`}>
-         <div className={styles.title} style={{ width: "100%" }}>
+          <div className={styles.title} style={{ width: "100%" }}>
             Уровень активности
           </div>
 
@@ -68,9 +112,14 @@ const TwoColumnLayout: React.FC = () => {
             <ChartComponent title="Ось Y" data={trainingData} />
             <ChartComponent title="Ось Z" data={trainingData} />
 
-            <div className={styles.container_chart}>
-              <h1 className={styles.secondary_title}>Уровень заряда</h1>
+            <div className={styles.container_chart_part}>
+              <h1 className={styles.secondary_title}>Заряд, %</h1>
               <ArcDesign />
+            </div>
+
+            <div className={styles.container_chart_part}>
+              <h1 className={styles.secondary_title}>Общее время использования</h1>
+              <h1 className={styles.title}>{formatSeconds(timeStart ?? 0)}</h1>
             </div>
           </div>
 
