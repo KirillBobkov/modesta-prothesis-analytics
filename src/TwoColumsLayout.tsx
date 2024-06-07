@@ -5,15 +5,12 @@ import { LineChart } from "@mui/x-charts/LineChart";
 import { Subscription } from "rxjs";
 import { connect } from "./connect";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
+import { GaugeContainer, GaugeValueArc, GaugeReferenceArc, useGaugeState } from "@mui/x-charts/Gauge";
 
 const TwoColumnLayout: React.FC = () => {
-  const [subscription, setSubscription] = useState<Subscription | undefined>(
-    undefined
-  );
+  const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
   const [trainingData, setTrainingData] = useState<number[]>([]);
-  const [currentValue, setCurrentValue] = useState<number | undefined>(
-    undefined
-  );
+  const [currentValue, setCurrentValue] = useState<number | undefined>(undefined);
   const handleConnect = useCallback(() => {
     const newSubscription = connect().subscribe((value: number) => {
       setCurrentValue(value * 10);
@@ -26,11 +23,7 @@ const TwoColumnLayout: React.FC = () => {
   }, [subscription]);
   useEffect(() => {
     if (currentValue !== undefined) {
-      setTrainingData((prevData) =>
-        prevData.length >= 20
-          ? [...prevData.slice(1), currentValue]
-          : [...prevData, currentValue]
-      );
+      setTrainingData((prevData) => (prevData.length >= 20 ? [...prevData.slice(1), currentValue] : [...prevData, currentValue]));
     }
   }, [currentValue]);
   useEffect(() => {
@@ -43,33 +36,58 @@ const TwoColumnLayout: React.FC = () => {
     <ThemeProvider theme={newTheme}>
       <div className={styles.layout}>
         <div className={`${styles.column} ${styles.columnLeft}`}>
+          <Profile />
+        </div>
+        <div className={`${styles.column} ${styles.columnRight}`}>
+          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+            Модеста мониторинг
+          </div>
+
           <div className={styles.container}>
             <h1 className={styles.title}>Управление Bluetooth</h1>
             <div className={styles.buttons}>
-              <Button
-                variant="contained"
-                style={{ backgroundColor: "#DCE359" }}
-                onClick={handleConnect}
-              >
+              <Button variant="contained" style={{ backgroundColor: "#DCE359" }} onClick={handleConnect}>
                 Подключить
               </Button>
-              <Button
-                variant="outlined"
-                style={{ borderColor: "#DCE359", color: "#DCE359" }}
-                onClick={handleDisconnect}
-              >
+              <Button variant="outlined" style={{ borderColor: "#DCE359", color: "#DCE359" }} onClick={handleDisconnect}>
                 Отключить
               </Button>
             </div>
           </div>
-          <Profile />
-        </div>
-        <div className={`${styles.column} ${styles.columnRight}`}>
+
+          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+            Уровень активности
+          </div>
           <ChartComponent title="Ось X" data={trainingData} />
           <ChartComponent title="Ось Y" data={trainingData} />
           <ChartComponent title="Ось Z" data={trainingData} />
+
           <div className={styles.container_chart}>
+            <h1 className={styles.title}>Уровень заряда</h1>
             <ArcDesign />
+          </div>
+
+          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+            Расход комплектующих
+          </div>
+          <div className={styles.container_chart}>
+            <h1 className={styles.title}>Подшипник</h1>
+            <CompositionExample />
+          </div>
+
+          <div className={styles.container_chart}>
+            <h1 className={styles.title}>Пружины</h1>
+            <CompositionExample />
+          </div>
+
+          <div className={styles.container_chart}>
+            <h1 className={styles.title}>Наконечник (пальцы)</h1>
+            <CompositionExample />
+          </div>
+
+          <div className={styles.container_chart}>
+            <h1 className={styles.title}>Нити</h1>
+            <CompositionExample />
           </div>
         </div>
       </div>
@@ -104,8 +122,7 @@ const ChartComponent: React.FC<ChartComponentProps> = ({ title, data }) => (
   </div>
 );
 const Profile: React.FC = () => (
-  <div className={styles.container}>
-    <h1 className={styles.title}>Профиль</h1>
+  <div>
     <div className={styles.person}>
       <div className={styles["person__avatar-container"]}>
         <img
@@ -125,8 +142,26 @@ const Profile: React.FC = () => (
         <span className={styles["person__profession"]}>
           <a href="mailto:test@mail.ru">test@mail.ru</a>
         </span>
+        <span className={styles["person__profession"]}>
+          <a href="mailto:test@mail.ru">Статус: Новичок (Меньше 100 часов использования)</a>
+        </span>
+
+        <span className={styles["person__profession"]}>
+          <a>Статус: Новичок (Меньше 100 часов использования)</a>
+        </span>
+
+        <span className={styles["person__profession"]}>
+          <a>Идентификационный номер: XF-434</a>
+        </span>
       </p>
     </div>
+
+    <div style={{ marginTop: "30px" }}></div>
+    <h2 className={styles.menu_link}>📦 Комплектация</h2>
+    <h2 className={styles.menu_link}>🛠 Ремонт</h2>
+    <h2 className={styles.menu_link}>🚀 Прогресс</h2>
+    <h2 className={styles.menu_link}>🌟 Рейтинг</h2>
+    <h2 className={styles.menu_link}>✏️ Задания</h2>
   </div>
 );
 const settings = {
@@ -153,3 +188,33 @@ const ArcDesign: React.FC = () => (
   />
 );
 export default TwoColumnLayout;
+
+function GaugePointer() {
+  const { valueAngle, outerRadius, cx, cy } = useGaugeState();
+
+  if (valueAngle === null) {
+    // No value to display
+    return null;
+  }
+
+  const target = {
+    x: cx + outerRadius * Math.sin(valueAngle),
+    y: cy - outerRadius * Math.cos(valueAngle),
+  };
+  return (
+    <g>
+      <circle cx={cx} cy={cy} r={5} fill="red" />
+      <path d={`M ${cx} ${cy} L ${target.x} ${target.y}`} stroke="red" strokeWidth={3} />
+    </g>
+  );
+}
+
+function CompositionExample() {
+  return (
+    <GaugeContainer width={200} height={200} startAngle={-110} endAngle={110} value={30}>
+      <GaugeReferenceArc />
+      <GaugeValueArc />
+      <GaugePointer />
+    </GaugeContainer>
+  );
+}

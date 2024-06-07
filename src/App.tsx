@@ -9,7 +9,7 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <TwoColumnLayout />
 
     </>
