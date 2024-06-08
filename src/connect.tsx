@@ -19,7 +19,7 @@ export function connect() {
  
     const server$ = device$.pipe( 
            // @ts-ignore
-        switchMap(device => from(device.gatt.connect())), 
+        switchMap(device => from(device?.gatt?.connect())), 
         tap(() => console.log('Берем сервис ', serviceUUID)), 
           // @ts-ignore
         switchMap(server => from(server.getPrimaryService(serviceUUID))), 
@@ -44,7 +44,7 @@ export function connect() {
 }
 
 export function disconnect(){
-    device.gatt.disconnect();
+    device?.gatt?.disconnect();
 }
 
 

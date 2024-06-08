@@ -110,6 +110,8 @@ const TwoColumnLayout: React.FC = () => {
             Уровень активности
           </div>
 
+         <div>{currentValue}</div>
+         <div>{JSON.stringify(trainingData)}</div>
           <div className={styles.charts}>
             <ChartComponent title="Ось X" data={trainingData} />
             <ChartComponent title="Ось Y" data={trainingData} />
