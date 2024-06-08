@@ -48,6 +48,7 @@ const TwoColumnLayout: React.FC = () => {
   const handleConnect = useCallback(() => {
     //
     const newSubscription = connect().subscribe((value: any) => {
+      console.log('value', value);
       setCurrentValue(+value * 10);
 
       setTest(value);
