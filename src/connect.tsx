@@ -49,8 +49,8 @@ export function disconnect(){
 
 
 function read(event: any) {
-    console.log('Пришло сообщение:', event);
-
     let value = event.target.value;
+    console.log('Пришло сообщение:', value);
+    console.log('Раскодировано:', new TextDecoder().decode(value));
     return new TextDecoder().decode(value);
 }
