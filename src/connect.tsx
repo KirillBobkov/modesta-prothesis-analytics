@@ -35,8 +35,9 @@ export function connect() {
     const notifications$ = server$.pipe( 
         switchMap(() => from(serialCharacteristic.startNotifications())), 
         switchMap(() => fromEvent(serialCharacteristic, 'characteristicvaluechanged')), 
-        tap(() => { 
-            serialCharacteristic.addEventListener('characteristicvaluechanged', read); 
+        tap((value) => { 
+            console.log('characteristicvaluechanged', value)
+            return read(value)
         }) 
     ); 
  
