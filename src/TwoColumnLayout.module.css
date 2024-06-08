@@ -198,6 +198,8 @@
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
+
+
   gap: 1%;
   row-gap: 20px;
   flex-wrap: wrap;
@@ -227,3 +229,43 @@ table {
   border-collapse: separate; /* Разделяем границы ячеек */
   border-spacing: 10px; /* Отступ между ячейками */
 }
+
+
+  @media (max-width: 600px) { 
+    .layout {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .charts {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      align-content: flex-start;
+      gap: 1%;
+      row-gap: 20px;
+      padding: 15px;
+      flex-wrap: wrap;
+      flex-grow: 1;
+      background-color: var(--bg-color);
+    }
+
+    
+.charts_2 {
+  padding: 15px;
+}
+
+    .container_chart {
+      width: 100%;
+      height: 200px;
+    }
+  
+    .container_chart_2 {
+      height: 150px;
+      width: 100%;
+    }
+  
+    .container_chart_part {
+      width: 100%;
+    }
+   }
