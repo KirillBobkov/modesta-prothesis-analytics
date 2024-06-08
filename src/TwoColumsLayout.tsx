@@ -42,10 +42,15 @@ const TwoColumnLayout: React.FC = () => {
   const [currentValue, setCurrentValue] = useState<number | undefined>(undefined);
   const [timeStart, setSeconds] = useState<number | undefined>(undefined);
 
+
+  const [test, setTest] = useState<number | undefined>(undefined);
+
   const handleConnect = useCallback(() => {
     //
     const newSubscription = connect().subscribe((value: any) => {
       setCurrentValue(+value * 10);
+
+      setTest(value);
     });
     setSubscription(newSubscription);
 
@@ -112,6 +117,8 @@ const TwoColumnLayout: React.FC = () => {
 
          <div>{currentValue}</div>
          <div>{JSON.stringify(trainingData)}</div>
+         <div>{JSON.stringify(test)}</div>
+
           <div className={styles.charts}>
             <ChartComponent title="Ось X" data={trainingData} />
             <ChartComponent title="Ось Y" data={trainingData} />
