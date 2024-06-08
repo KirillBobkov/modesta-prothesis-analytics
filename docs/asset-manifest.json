@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/modesta-prothesis-analytics/static/css/main.bee13fb7.css",
-    "main.js": "/modesta-prothesis-analytics/static/js/main.471ac6a4.js",
+    "main.js": "/modesta-prothesis-analytics/static/js/main.bc64fecc.js",
     "index.html": "/modesta-prothesis-analytics/index.html",
     "main.bee13fb7.css.map": "/modesta-prothesis-analytics/static/css/main.bee13fb7.css.map",
-    "main.471ac6a4.js.map": "/modesta-prothesis-analytics/static/js/main.471ac6a4.js.map"
+    "main.bc64fecc.js.map": "/modesta-prothesis-analytics/static/js/main.bc64fecc.js.map"
   },
   "entrypoints": [
     "static/css/main.bee13fb7.css",
-    "static/js/main.471ac6a4.js"
+    "static/js/main.bc64fecc.js"
   ]
 }
