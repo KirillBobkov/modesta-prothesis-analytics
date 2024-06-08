@@ -3,7 +3,7 @@ import styles from "./TwoColumnLayout.module.css";
 import { Button, ThemeProvider, createTheme } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Subscription } from "rxjs";
-import { connect } from "./connect";
+import { connect, disconnect } from "./connect";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
 import { GaugeContainer, GaugeValueArc, GaugeReferenceArc, useGaugeState } from "@mui/x-charts/Gauge";
 
@@ -43,8 +43,9 @@ const TwoColumnLayout: React.FC = () => {
   const [timeStart, setSeconds] = useState<number | undefined>(undefined);
 
   const handleConnect = useCallback(() => {
-    const newSubscription = connect().subscribe((value: number) => {
-      setCurrentValue(value * 10);
+    //
+    const newSubscription = connect().subscribe((value: any) => {
+      setCurrentValue(+value * 10);
     });
     setSubscription(newSubscription);
 
@@ -60,6 +61,8 @@ const TwoColumnLayout: React.FC = () => {
   }, []);
 
   const handleDisconnect = useCallback(() => {
+    disconnect();
+
     subscription?.unsubscribe();
     setSubscription(undefined);
     subscription2?.unsubscribe();

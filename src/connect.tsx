@@ -1,4 +1,4 @@
-import { from, fromEvent, interval, timer } from 'rxjs'; 
+import { from, fromEvent } from 'rxjs'; 
 import { switchMap, tap } from 'rxjs/operators'; 
  
 const serviceUUID = 0xFFE0;
@@ -18,11 +18,13 @@ export function connect() {
     })); 
  
     const server$ = device$.pipe( 
+           // @ts-ignore
         switchMap(device => from(device.gatt.connect())), 
         tap(() => console.log('Берем сервис ', serviceUUID)), 
           // @ts-ignore
         switchMap(server => from(server.getPrimaryService(serviceUUID))), 
         tap(() => console.log('Берем характеристику ', serialUUID)), 
+           // @ts-ignore
         switchMap(service => from(service.getCharacteristic(serialUUID))), 
         tap(characteristic => { 
             serialCharacteristic = characteristic; 
@@ -41,7 +43,7 @@ export function connect() {
     return notifications$; 
 }
 
-function disconnect(){
+export function disconnect(){
     device.gatt.disconnect();
 }
 
