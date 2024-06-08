@@ -81,7 +81,7 @@
   }
 
   .container_chart_2 {
-    height: 150px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -261,7 +261,7 @@ table {
     }
   
     .container_chart_2 {
-      height: 150px;
+      height: 200px;
       width: 100%;
     }
   

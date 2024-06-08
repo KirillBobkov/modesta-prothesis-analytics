@@ -3,9 +3,14 @@ import styles from "./TwoColumnLayout.module.css";
 import { Button, ThemeProvider, createTheme } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Subscription } from "rxjs";
-import { connect, disconnect } from "./connect";
+import { connect, disconnect, getStatus, read } from "./connect";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
-import { GaugeContainer, GaugeValueArc, GaugeReferenceArc, useGaugeState } from "@mui/x-charts/Gauge";
+import {
+  GaugeContainer,
+  GaugeValueArc,
+  GaugeReferenceArc,
+  useGaugeState,
+} from "@mui/x-charts/Gauge";
 
 import { fromEvent, interval } from "rxjs";
 import { mapTo, scan, startWith, tap } from "rxjs/operators";
@@ -28,30 +33,41 @@ export function createCounterObservable() {
 function formatSeconds(seconds: number) {
   const hours = Math.floor(seconds / 3600); // Часы
   seconds %= 3600; // Остаток от деления на 3600 (минуты)
-  
+
   const minutes = Math.floor(seconds / 60); // Минуты
   seconds %= 60; // Секунды
-  
-  return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${("0" + seconds).slice(-2)}`;
+
+  return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}:${(
+    "0" + seconds
+  ).slice(-2)}`;
 }
 
 const TwoColumnLayout: React.FC = () => {
-  const [subscription, setSubscription] = useState<Subscription | undefined>(undefined);
-  const [subscription2, setSubscription2] = useState<Subscription | undefined>(undefined);
-  const [trainingData, setTrainingData] = useState<number[]>([]);
-  const [currentValue, setCurrentValue] = useState<number | undefined>(undefined);
+  const [subscription, setSubscription] = useState<Subscription | undefined>(
+    undefined
+  );
+  const [subscription2, setSubscription2] = useState<Subscription | undefined>(
+    undefined
+  );
+  const [subscription3, setSubscription3] = useState<Subscription | undefined>(
+    undefined
+  );
+
+  const [trainingData, setTrainingData] = useState<any[]>([]);
+  const [currentValue, setCurrentValue] = useState<any[] | undefined>(
+    undefined
+  );
   const [timeStart, setSeconds] = useState<number | undefined>(undefined);
 
-
-  const [test, setTest] = useState<number | undefined>(undefined);
+  const [connected, setStatus] = useState<boolean>(false);
 
   const handleConnect = useCallback(() => {
     //
     const newSubscription = connect().subscribe((value: any) => {
-      console.log('value', value);
-      setCurrentValue(+value * 10);
-
-      setTest(value);
+      const parsed = value.split(",");
+      if (Array.isArray(parsed)) {
+        setCurrentValue(parsed);
+      }
     });
     setSubscription(newSubscription);
 
@@ -59,11 +75,10 @@ const TwoColumnLayout: React.FC = () => {
     const counterObj = createCounterObservable();
 
     const newSubscription2 = counterObj.subscribe({
-      next: (value) => setSeconds(value)
+      next: (value) => setSeconds(value),
     });
 
     setSubscription2(newSubscription2);
-
   }, []);
 
   const handleDisconnect = useCallback(() => {
@@ -73,10 +88,16 @@ const TwoColumnLayout: React.FC = () => {
     setSubscription(undefined);
     subscription2?.unsubscribe();
     setSubscription2(undefined);
+    setSeconds(undefined);
+
   }, [subscription]);
   useEffect(() => {
     if (currentValue !== undefined) {
-      setTrainingData((prevData) => (prevData.length >= 20 ? [...prevData.slice(1), currentValue] : [...prevData, currentValue]));
+      setTrainingData((prevData) =>
+        prevData.length >= 20
+          ? [...prevData.slice(1), currentValue]
+          : [...prevData, currentValue]
+      );
     }
   }, [currentValue]);
   useEffect(() => {
@@ -96,14 +117,26 @@ const TwoColumnLayout: React.FC = () => {
           <div className={styles.container_buttons}>
             <h1 className={styles.secondary_title}>Управление Bluetooth</h1>
             <div className={styles.buttons}>
-              <Button variant="contained" style={{ backgroundColor: "#DCE359" }} onClick={handleConnect}>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: "#DCE359" }}
+                onClick={handleConnect}
+              >
                 Подключить
               </Button>
-              <Button variant="outlined" style={{ borderColor: "#DCE359", color: "#DCE359" }} onClick={handleDisconnect}>
+              <Button
+                variant="outlined"
+                style={{ borderColor: "#DCE359", color: "#DCE359" }}
+                onClick={handleDisconnect}
+              >
                 Отключить
               </Button>
+           
             </div>
+
           </div>
+          <div style={{ marginTop: "30px" }}></div>
+          <h1 className={styles.title}>{!!getStatus() ? 'Подключено' : "Отключено"}</h1>
           <div style={{ marginTop: "30px" }}></div>
           <h2 className={styles.menu_link}>📦 Комплектация</h2>
           <h2 className={styles.menu_link}>🛠 Ремонт</h2>
@@ -116,14 +149,19 @@ const TwoColumnLayout: React.FC = () => {
             Уровень активности
           </div>
 
-         <div>{currentValue}</div>
-         <div>{JSON.stringify(trainingData)}</div>
-         <div>{JSON.stringify(test)}</div>
-
           <div className={styles.charts}>
-            <ChartComponent title="Ось X" data={trainingData} />
-            <ChartComponent title="Ось Y" data={trainingData} />
-            <ChartComponent title="Ось Z" data={trainingData} />
+            <ChartComponent
+              title="Ось X"
+              data={trainingData.map((tr) => tr[0])}
+            />
+            <ChartComponent
+              title="Ось Y"
+              data={trainingData.map((tr) => tr[1])}
+            />
+            <ChartComponent
+              title="Ось Z"
+              data={trainingData.map((tr) => tr[2])}
+            />
 
             <div className={styles.container_chart_part}>
               <h1 className={styles.secondary_title}>Заряд, %</h1>
@@ -131,33 +169,38 @@ const TwoColumnLayout: React.FC = () => {
             </div>
 
             <div className={styles.container_chart_part}>
-              <h1 className={styles.secondary_title}>Общее время использования</h1>
+              <h1 className={styles.secondary_title}>
+                Общее время использования
+              </h1>
               <h1 className={styles.title}>{formatSeconds(timeStart ?? 0)}</h1>
             </div>
           </div>
 
-          <div className={styles.title} style={{ marginTop: "30px", width: "100%" }}>
+          <div
+            className={styles.title}
+            style={{ marginTop: "30px", width: "100%" }}
+          >
             Расход комплектующих
           </div>
           <div className={styles.charts_2}>
             <div className={styles.container_chart_2}>
-              <h1 className={styles.secondary_title}>Подшипник</h1>
-              <CompositionExample />
+              <h1 className={styles.secondary_title}>Втулки</h1>
+              <CompositionExample val={30} />
             </div>
 
             <div className={styles.container_chart_2}>
               <h1 className={styles.secondary_title}>Пружины</h1>
-              <CompositionExample />
+              <CompositionExample val={66} />
             </div>
 
             <div className={styles.container_chart_2}>
               <h1 className={styles.secondary_title}>Наконечник</h1>
-              <CompositionExample />
+              <CompositionExample val={21} />
             </div>
 
             <div className={styles.container_chart_2}>
               <h1 className={styles.secondary_title}>Нити</h1>
-              <CompositionExample />
+              <CompositionExample val={89} />
             </div>
           </div>
         </div>
@@ -289,17 +332,33 @@ function GaugePointer() {
   return (
     <g>
       <circle cx={cx} cy={cy} r={5} fill="red" />
-      <path d={`M ${cx} ${cy} L ${target.x} ${target.y}`} stroke="red" strokeWidth={3} />
+      <path
+        d={`M ${cx} ${cy} L ${target.x} ${target.y}`}
+        stroke="red"
+        strokeWidth={3}
+      />
     </g>
   );
 }
 
-function CompositionExample() {
+function CompositionExample({ val }: any) {
   return (
-    <GaugeContainer width={200} startAngle={-110} endAngle={110} value={30}>
-      <GaugeReferenceArc />
-      <GaugeValueArc />
-      <GaugePointer />
-    </GaugeContainer>
+    <Gauge
+  value={val}
+  startAngle={-110}
+  endAngle={110}
+  sx={{
+    [`& .${gaugeClasses.valueText}`]: {
+      fontSize: 30,
+      transform: 'translate(0px, 0px)',
+    },
+    [`& .${gaugeClasses.valueArc}`]: {
+      fill: "#DCE359",
+    },
+  }}
+  text={
+     ({ value, valueMax }) => `${value}%`
+  }
+/>
   );
 }
