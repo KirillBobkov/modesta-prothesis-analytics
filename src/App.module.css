@@ -7,7 +7,6 @@
     flex-grow: 1;
     flex-shrink: 0;
     width: 100%;
-    gap: 20px;
   }
 
   .navigation {
@@ -79,22 +78,6 @@
     align-items: center;
   }
 
-  .status_circle_off {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background-color: #ff0000;
-  }
-
-  .status_circle_on {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background-color: #33ff00;
-  }
-
   .buttons {
     display: flex;
     flex-wrap: nowrap;
@@ -114,14 +97,14 @@
   }
   
   .columnRight {
-    width: 320px;
+    flex-basis: 320px;
     flex-shrink: 0;
     background-color: var(--card-bg-color);
     padding: 20px;
   }
 
   .columnCenter {
-    padding: 20px 0;
+    padding: 20px;
     flex-grow: 1;
     background-color: var(--bg-color);
   }
