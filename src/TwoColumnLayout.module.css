@@ -9,12 +9,90 @@
     width: 100%;
     gap: 20px;
   }
+
+  .navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+.navigation__logo {
+  line-height: 0;
+  cursor: pointer;
+}
+
+.navigation__logo svg {
+  fill: var(--font-color);
+}
+
+
+.navigation__item--external {
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.navigation__item--external span {
+  font-size: 12px;
+  line-height: 24px;
+  vertical-align: middle;
+  color: var(--font-color);
+}
+
+.navigation__item--external svg {
+  fill: var(--font-color);
+}
+
+.navigation__item--external:hover {
+  color: var(--font-color);
+}
+
+.navigation__imgSK {
+  fill: var(--font-color);
+  margin-right: 5px;
+}
+
+
+.navigation__imgSK svg g {
+  fill: var(--font-color);
+}
+
+
   .title {
     margin-bottom: 20px;
     font-size: 32px;
     line-height: 36px;
     font-weight: bold;
     color: var(--font-color);
+  }
+
+  
+  .status {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: bold;
+    color: var(--font-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .status_circle_off {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background-color: #ff0000;
+  }
+
+  .status_circle_on {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background-color: #33ff00;
   }
 
   .buttons {
@@ -36,7 +114,7 @@
   }
   
   .columnRight {
-    flex-basis: 250px;
+    width: 320px;
     flex-shrink: 0;
     background-color: var(--card-bg-color);
     padding: 20px;
@@ -184,13 +262,17 @@
 
 
 .menu_link {
-  color: #ffffff;
-  margin-bottom: 20px;
+  color: #5c5c5c;
+  margin-bottom: 10px;
   text-align: left;
   font-size: 16px;
   line-height: 20px;
   width: 100%;
+  font-weight: bold;
   white-space: pre-line;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .charts {
@@ -198,8 +280,6 @@
   justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
-
-
   gap: 1%;
   row-gap: 20px;
   flex-wrap: wrap;
@@ -220,9 +300,10 @@
 }
 
 .secondary_title {
-    font-size: 20px;
-    line-height: 24px;
-    color: #505050;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: center;
+    color: #a5a5a5;
 }
 
 table {
